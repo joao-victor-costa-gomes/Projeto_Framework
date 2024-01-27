@@ -15,4 +15,6 @@ def home(request, response):
 def about(request, response):
         response.text = "Hello! This is the ABOUT page!"  
 
-
+@app.route("/hello/{name}")
+def hello(request, response, name):
+        response.text = f"Hello, {name}!"
