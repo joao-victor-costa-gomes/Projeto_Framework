@@ -18,3 +18,9 @@ def about(request, response):
 @app.route("/hello/{name}")
 def hello(request, response, name):
         response.text = f"Hello, {name}!"
+
+@app.route("/book")
+class BooksResource:
+        def get(self, request, response):
+                response.text = "Books page"
+        
