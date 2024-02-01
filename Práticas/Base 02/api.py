@@ -1,11 +1,28 @@
 from webob import Request, Response
 from parse import parse 
 import inspect
+from requests import Session 
+from wsgiadapter import WSGIAdapter
+import os
+from jinja2 import Environment, FileSystemLoader
 
 class API:
 
-    def __init__(self):
+    def __init__(self, templates_dir="templates"):
         self.routes = {}
+        self.templates_env = Environment(loader=FileSystemLoader(os.path.abspath("templates")))
+
+    def template(self, template_name, context=None):
+        if context is None:
+            context = {}
+
+        return self.templates_env.get_template(template_name).render(**context)
+ 
+
+    def add_route(self, path, handler):
+        if path in self.routes:
+           raise AssertionError("Such path already exists.") 
+        self.routes[path] = handler 
 
     def route(self, path):
         if path in self.routes:
@@ -52,6 +69,13 @@ class API:
                 return handler, parse_result.named
         
         return None, None 
+
+    def test_session(self, base_url="http://testserver"):
+        session = Session()
+        session.mount(prefix=base_url, adapter=WSGIAdapter(self))
+        return session 
+
+    
 
     
 

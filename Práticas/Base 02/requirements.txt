@@ -1,4 +1,7 @@
-WebOb      1.8.7 
-waitress   2.1.2  
-parse      1.20.0 
-pytest     8.0.0
+WebOb                   1.8.7 
+waitress                2.1.2  
+parse                   1.20.0 
+pytest                  8.0.0
+requests                2.31.0 
+requests-wsgi-adapter   0.4.1 
+Jinja2                  3.1.3
