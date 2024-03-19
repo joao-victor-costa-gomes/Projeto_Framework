@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página pessoal</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/style.css') }}">
+
+</head>
+<body>
+    <h1>PÁGINA INICIAL</h1>
+    <p>Essa é a primeira página do site.</p>
+    <img src="{{ url_for('static', filename='toothless-dancing.gif') }}" alt="toothless dancing">
+
+    <div>
+        <a href="{{ url_for('jogos') }}">>>> Página de jogos</a>
+        <a href="{{ url_for('usuarios') }}">>>> Página do usuário</a>
+    </div>
+
+</body>
+</html>
