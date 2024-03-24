@@ -1,0 +1,8 @@
+waitress              
+WebOb                 
+paste                 
+pytest                
+requests              
+requests-wsgi-adapter 
+Jinja2                
+whitenoise            

@@ -9,7 +9,7 @@ from whitenoise import WhiteNoise
 from middleware import Middleware
 
 class API:
-
+    
     def __init__(self, templates_dir="templates", static_dir="static"):
         self.routes = {}
         self.templates_env = Environment(loader=FileSystemLoader(os.path.abspath("templates")))
