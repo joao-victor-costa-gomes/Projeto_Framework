@@ -1,3 +1,5 @@
+# Código responsável por criar um servidor e fazer ele rodar 
+
 # BIBLIOTECAS 
 from webob import Request, Response 
 from waitress import serve

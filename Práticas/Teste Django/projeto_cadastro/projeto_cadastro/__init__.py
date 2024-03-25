@@ -1,1 +1,0 @@
-# Utilizar o diretório "projeto_cadastro" como um pacote Python

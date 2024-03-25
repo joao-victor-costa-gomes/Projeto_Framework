@@ -1,1 +1,0 @@
-# Utilizar o diretório "app_cadastro" como um pacote Python

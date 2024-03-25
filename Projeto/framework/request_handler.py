@@ -1,4 +1,5 @@
 # Código responsável por lidar com as requests (requisições) e dar uma resposta equivalente
+
 from webob import Request, Response 
 
 class Request_Handler:

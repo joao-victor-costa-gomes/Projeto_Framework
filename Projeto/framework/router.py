@@ -1,4 +1,4 @@
-# Reponsável por associar paths (caminhos) às routes (rotas) da URL da aplicação
+# Código reponsável por associar paths (caminhos) às routes (rotas) da URL da aplicação
 
 class Router:
     def __init__(self):
