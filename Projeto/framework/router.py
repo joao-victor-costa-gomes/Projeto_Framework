@@ -1,10 +1,12 @@
-# Código reponsável por associar paths (caminhos) às routes (rotas) da URL da aplicação
-
 class Router:
     def __init__(self):
         self.routes = {}
 
     def add_route(self, path, handler):
+        
+        if path in self.routes:
+            raise AssertionError(f"\n\nThe path '{path}' already exists.\n")
+
         self.routes[path] = handler 
 
     def find_handler(self, path):
