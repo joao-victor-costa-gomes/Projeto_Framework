@@ -10,4 +10,3 @@ def home(request, response):
 
 if __name__ == "__main__":
     app.run_server("localhost", 8000)
- 

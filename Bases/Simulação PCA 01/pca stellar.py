@@ -5,14 +5,13 @@ import time
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-
 from sklearn import decomposition
 from sklearn.decomposition import PCA
 
 import matplotlib.pyplot as plt 
 
 # Carrega arquivo de dados csv e indica que seus dados estão delimitiamdos por vírgula 
-stellar_dataset = pd.read_csv("star_classification.csv", delimiter=",")
+stellar_dataset = pd.read_csv("star_classification.csv", delimiter=",") # <----- VARIÁVEL
 
 # O eixo X representa todos os valores que não estão na coluna "class"
 x = stellar_dataset.loc[:, stellar_dataset.columns != "class"].values 
@@ -32,7 +31,7 @@ scale_object = StandardScaler()
 x = scale_object.fit_transform(x.astype(float))
 
 # Pega aleatoriamente 15% das amostras para o resultado do algoritmo 
-xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.15)
+xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.15) # <----- VARIÁVEL
 
 # Não aplique um PCA antes de fazer um scaler 
 pca = decomposition.PCA(n_components=10) # Escolha de 10 colunas, a escolha vai depender do gráfico gerado
@@ -44,10 +43,10 @@ start_time = time.perf_counter()
 model.fit(xTrain, yTrain)
 end_time = time.perf_counter()
 
-print("Tempo de treino: ", end_time-start_time)
-print("Score: ", model.score(xTest, yTest))
-
-pca_viewer = PCA(n_components=2) # PARA representação 2D
+print("Tempo de treino: ", end_time-start_time) # <----- ATRIBUTO
+print("Score: ", model.score(xTest, yTest))     # <----- ATRIBUTO
+ 
+pca_viewer = PCA(n_components=2) # PARA representação 2D <----- VARIÁVEL
 principal_components = pca_viewer.fit_transform(xTrain)
 print(pca_viewer.explained_variance_ratio_) # A soma dos dois eixos explica a precisão do PCA (vendo em %)
 

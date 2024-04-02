@@ -17,13 +17,13 @@ class Request_Handler:
                     handler = getattr(handler(), request.method.lower(), None) 
 
                     if handler is None:
-                        raise AttributeError("Method now allowed", request.method)
+                        raise AttributeError("Método de requisição não permitido.", request.method)
 
                 handler(request, response)
 
             else:  
                 response.status_code = 404
-                response.text = "<h1>ERROR 404 - PAGE NOT FOUND.</h1>"
+                response.text = "<h1>ERROR 404 - PÁGINA NÃO ENCONTRADA.</h1>"
         
         except Exception as exception:
             if self.exception_handler is None:
@@ -32,10 +32,3 @@ class Request_Handler:
                 self.exception_handler(request, response, exception)
 
         return response
-
-
-    
-            
-
-        
-

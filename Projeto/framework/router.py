@@ -5,7 +5,7 @@ class Router:
     def add_route(self, path, handler):
         
         if path in self.routes:
-            raise AssertionError(f"\n\nThe path '{path}' already exists.\n")
+            raise AssertionError(f"\n\nO caminho '{path}' já está em uso.\n")
 
         self.routes[path] = handler 
 

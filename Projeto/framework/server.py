@@ -41,9 +41,6 @@ class Server:
         self.request_handler.exception_handler = exception_handler
 
     def run_server(self, host, port):
+        print(f"\nServidor rodando em http://{host}:{port}\n")
         serve(self, host=host, port=port)
-
-
-
-
-
+        
