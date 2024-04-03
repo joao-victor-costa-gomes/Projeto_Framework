@@ -14,9 +14,16 @@ import matplotlib.pyplot as plt
 # Carrega arquivo de dados csv e indica que seus dados estão delimitiamdos por vírgula 
 mobile_dataset = pd.read_csv("train.csv", delimiter=",")
 
-x = mobile_dataset.iloc[:, :-1].values # Todas as linhas e colunas com exceção da última colunas (prices)
-y = mobile_dataset.iloc[:, -1].values # Todas as linhas e a última coluna 
+#x = mobile_dataset.iloc[:, :-1].values # Todas as linhas e colunas com exceção da última colunas (prices)
+#y = mobile_dataset.iloc[:, -1].values # Todas as linhas e a última coluna 
 # Lembrando que a última coluna é a queremos destacar, que é a do preço dos celulares
+
+# Substitua [:, :-1] por ['battery_power', 'blue', 'clock_speed', ...] 
+x = mobile_dataset[['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi']].values
+
+# Substitua [:, -1] por ['price_range']
+y = mobile_dataset['price_range'].values
+
 
 # Para reduzir a discrepância entre variáveis e não afetar a visualização final 
 scaler_object = StandardScaler()
@@ -39,7 +46,6 @@ end_time = time.perf_counter()
 
 print("Tempo de treino: ", end_time-start_time)
 print("Score: ", model.score(xTest, yTest))
-
 
 pca_viewer = PCA(n_components=2) 
 principal_components = pca_viewer.fit_transform(xTrain)
