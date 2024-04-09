@@ -1,10 +1,9 @@
-# BIBLIOTECAS 
 import os 
 from webob import Request, Response 
 from waitress import serve
 from jinja2 import Environment, FileSystemLoader
 from whitenoise import WhiteNoise
-# ARQUIVOS DO FRAMEWORK
+
 from framework.router import Router
 from framework.request_handler import Request_Handler
 

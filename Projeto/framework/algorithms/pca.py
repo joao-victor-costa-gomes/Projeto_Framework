@@ -1,3 +1,4 @@
+import os 
 import numpy 
 import pandas
 
@@ -12,19 +13,32 @@ from sklearn.linear_model import LogisticRegression
 
 class PCA_2D:
 
-    '''O algoritmo será uma classe que será importada pelo usuário e reberá uma base de dados e outros parâmetros. Minha ideia inicial para as variáveis necessárias são: base de dados, amostragem, dimensão, coluna 1 2 e 3, componente 1 2 e 3. Para os atributos dessa classe: tempo de processamento, precisão, local da imagem'''
+    def __init__(self, nome=None, base_dados=None, amostragem=None, pc1=None, pc2=None):
 
-    def __init__(self, nome, base_dados, amostragem, pc1, pc2):
-        self.nome = nome
-        self.base_dados = base_dados
+        if nome == None or base_dados == None or amostragem == None or pc1 == None or pc2 == None:
+            raise ValueError("Faltou informar algum padrão obrigatório na função PCA_2D")
+
+        if not self.verificar_extensao_csv(base_dados):
+            raise ValueError("O arquivo enviado não é um arquivo CSV")
+
+        # Valores de pré-processamento 
+        self.nome = nome.replace(' ', '_')
+        self.base_dados = f"datasets/{base_dados}"
         self.amostragem = amostragem
         self.pc1 = pc1
         self.pc2 = pc2
         
+        # Valores de pós-processamento 
         self.tempo = None 
         self.desempenho = None 
         self.variancia = None 
         self.imagem = None 
+
+        # Remove a necessidade de precisar executar a instância
+        self.__call__()
+
+        # Remove o "dataset/" do nome da base dados 
+        self.base_dados = base_dados 
 
     def __call__(self):
         # Carregando arquivos CSV e definindo vírgula como delimitador
@@ -48,19 +62,16 @@ class PCA_2D:
         xTest = pca.transform(xTest)
 
         self.variancia = pca.explained_variance_ratio_
-        print(f'Variância: {self.variancia}')
 
-        # Vendo tempo de treino do algoritmo 
+        # Calculando tempo de treino e desempenho do algoritmo 
         model = LogisticRegression(solver="lbfgs", max_iter=1000)
         start_time = time.perf_counter()
         model.fit(xTrain, yTrain)
         end_time = time.perf_counter()
 
         self.tempo = end_time - start_time
-        print(f"Tempo: {self.tempo}")
 
         self.desempenho = model.score(xTest, yTest)
-        print(f"Desempenho: {self.desempenho}")
 
         # Transformar componentes principais em um dataframe para usá-los no Matplotlib  
         principal_components_DF = pandas.DataFrame(data=xTrain, columns=["principal component 1", "principal component 2"])
@@ -68,10 +79,10 @@ class PCA_2D:
         # Construindo figura que será exibida
         plt.figure()
         plt.figure(figsize=(10, 10))
-        plt.xticks(fontsize=12)
-        plt.yticks(fontsize=14)
-        plt.xlabel("Principal Component - 1", fontsize="20")
-        plt.ylabel("Principal Component - 2", fontsize="20")
+        plt.xticks(fontsize=10)
+        plt.yticks(fontsize=10)
+        plt.xlabel("Principal Component - 1", fontsize="12")
+        plt.ylabel("Principal Component - 2", fontsize="12")
         plt.xlim(-2500, 2500)
         plt.ylim(-1500, 1500)
         plt.title(f"{self.nome}", fontsize=20)
@@ -88,9 +99,14 @@ class PCA_2D:
             )
 
         plt.legend(targets, prop={"size":15})
-        # plt.show()
         plt.savefig(f"static/{self.nome}.png")
         self.imagem = f"{self.nome}.png"
+
+    # Verifica se a base de dados enviada pelo usuário é um arquivo .csv
+    def verificar_extensao_csv(self, base_dados):
+        _, extensao = os.path.splitext(base_dados)
+        return extensao.lower() == '.csv'
+
 
 
         
