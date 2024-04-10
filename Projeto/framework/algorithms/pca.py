@@ -1,6 +1,7 @@
 import os 
 import numpy 
 import pandas
+import seaborn
 
 import time 
 
@@ -22,7 +23,7 @@ class PCA_2D:
             raise ValueError("O arquivo enviado não é um arquivo CSV")
 
         # Valores de pré-processamento 
-        self.nome = nome.replace(' ', '_')
+        self.nome = nome
         self.base_dados = f"datasets/{base_dados}"
         self.amostragem = amostragem
         self.pc1 = pc1
@@ -38,7 +39,7 @@ class PCA_2D:
         self.__call__()
 
         # Remove o "dataset/" do nome da base dados 
-        self.base_dados = base_dados 
+        self.base_dados = base_dados
 
     def __call__(self):
         # Carregando arquivos CSV e definindo vírgula como delimitador
@@ -60,7 +61,6 @@ class PCA_2D:
         pca = PCA(n_components=2)
         xTrain = pca.fit_transform(xTrain)
         xTest = pca.transform(xTest)
-
         self.variancia = pca.explained_variance_ratio_
 
         # Calculando tempo de treino e desempenho do algoritmo 
@@ -68,9 +68,7 @@ class PCA_2D:
         start_time = time.perf_counter()
         model.fit(xTrain, yTrain)
         end_time = time.perf_counter()
-
         self.tempo = end_time - start_time
-
         self.desempenho = model.score(xTest, yTest)
 
         # Transformar componentes principais em um dataframe para usá-los no Matplotlib  
@@ -86,26 +84,33 @@ class PCA_2D:
         plt.xlim(-2500, 2500)
         plt.ylim(-1500, 1500)
         plt.title(f"{self.nome}", fontsize=20)
-        targets = [0, 1, 2, 3]
-        colors = ["r", "g", "b", "y"]
+        targets = self.get_unique_values(dataset, self.pc2)
+
+        seaborn.set_palette("Set1")
+        colors = seaborn.color_palette(n_colors=len(targets))
 
         for target, color in zip(targets, colors):
             indicesToKeep = yTrain == target 
             plt.scatter(principal_components_DF.loc[indicesToKeep, "principal component 1"], 
                         principal_components_DF.loc[indicesToKeep, "principal component 2"], 
-                        c = color,
+                        c=[colors[targets.index(target)]],
                         s = 25,
                         alpha = 0.5   
             )
 
         plt.legend(targets, prop={"size":15})
-        plt.savefig(f"static/{self.nome}.png")
-        self.imagem = f"{self.nome}.png"
+        plt.savefig(f"static/{self.nome.replace(' ', '_')}.png")
+        self.imagem = f"{self.nome.replace(' ', '_')}.png"
 
     # Verifica se a base de dados enviada pelo usuário é um arquivo .csv
     def verificar_extensao_csv(self, base_dados):
         _, extensao = os.path.splitext(base_dados)
         return extensao.lower() == '.csv'
+
+    # Pegar automaticamente os targets sem precisar informar
+    def get_unique_values(self, dataframe, column_name):
+        unique_values = dataframe[column_name].unique().tolist()
+        return unique_values
 
 
 
