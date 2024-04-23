@@ -1,11 +1,16 @@
-import os 
+# BIBLIOTECAS EXTERNAS
+import os
+import sys 
 from webob import Request, Response 
 from waitress import serve
 from jinja2 import Environment, FileSystemLoader
 from whitenoise import WhiteNoise
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
-from framework.router import Router
+# ARQUIVOS DO FRAMEWORK
 from framework.request_handler import Request_Handler
+from framework.router import Router
 
 class Server:
 
@@ -35,11 +40,14 @@ class Server:
             context = {}
         return self.templates_environment.get_template(template_name).render(**context)
         
-
     def add_exception_handler(self, exception_handler):
         self.request_handler.exception_handler = exception_handler
+
+    def add_404_handler(self, error_handler):
+        self.request_handler.error_handler = error_handler
 
     def run_server(self, host, port):
         print(f"\nServidor rodando em http://{host}:{port}\n")
         serve(self, host=host, port=port)
-        
+
+

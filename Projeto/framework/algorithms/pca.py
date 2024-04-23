@@ -8,7 +8,7 @@ import time
 import matplotlib.pyplot as plt 
 
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
@@ -17,7 +17,7 @@ class PCA_2D:
     def __init__(self, nome=None, base_dados=None, amostragem=None, pc1=None, pc2=None):
 
         if nome == None or base_dados == None or amostragem == None or pc1 == None or pc2 == None:
-            raise ValueError("Faltou informar algum padrão obrigatório na função PCA_2D")
+            raise ValueError("Faltou informar algum dos parâmetros obrigatórios na função PCA_2D")
 
         if not self.verificar_extensao_csv(base_dados):
             raise ValueError("O arquivo enviado não é um arquivo CSV")
@@ -99,6 +99,8 @@ class PCA_2D:
             )
 
         plt.legend(targets, prop={"size":15})
+
+        # Salva imagem gerada pelo código
         plt.savefig(f"static/{self.nome.replace(' ', '_')}.png")
         self.imagem = f"{self.nome.replace(' ', '_')}.png"
 
@@ -112,6 +114,6 @@ class PCA_2D:
         unique_values = dataframe[column_name].unique().tolist()
         return unique_values
 
-
-
-        
+    # Converte valores de texto em valores inteiros 
+    def aplicar_label_encoder(self, coluna):
+        pass

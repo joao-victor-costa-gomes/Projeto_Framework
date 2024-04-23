@@ -5,6 +5,7 @@ class Request_Handler:
     def __init__(self, router):
         self.router = router
         self.exception_handler = None 
+        self.error_handler = None
 
     def handle_request(self, request):
         handler = self.router.find_handler(request.path)
@@ -23,7 +24,10 @@ class Request_Handler:
 
             else:  
                 response.status_code = 404
-                response.text = "<h1>ERROR 404 - PÁGINA NÃO ENCONTRADA.</h1>"
+                if self.error_handler is None:
+                    response.text = "<h1>ERROR 404 - PÁGINA NÃO ENCONTRADA.</h1>"
+                else:
+                    self.error_handler(request, response)
         
         except Exception as exception:
             if self.exception_handler is None:

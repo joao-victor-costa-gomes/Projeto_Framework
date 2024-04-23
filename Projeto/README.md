@@ -96,3 +96,14 @@ app.add_exception_handler(something_went_wrong)
 def exception_throwing_handler(request, response):
     raise AssertionError("Mensagem de erro no terminal")
  ```
+
+ ## Mensagens de error 404 
+
+Do mesmo modo das mensagens de comportamentos inesperados, você pode adicionar sua própria mensagem de ERROR 404. Só seguir a referência abaixo. (Obs: Caso você não adicione, haverá uma mensagem padrão) 
+
+```bash
+def error404(request, response):
+    response.text = "<h1>OOPS...DEU ERRO 404 AQUI AMIGO</h1>"
+
+app.add_404_handler(error404)
+ ```
