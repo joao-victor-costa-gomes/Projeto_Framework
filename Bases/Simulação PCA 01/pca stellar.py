@@ -11,7 +11,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt 
 
 # Carrega arquivo de dados csv e indica que seus dados estão delimitiamdos por vírgula 
-stellar_dataset = pd.read_csv("star_classification.csv", delimiter=",") # <----- VARIÁVEL
+stellar_dataset = pd.read_csv("datasets/star_classification.csv", delimiter=",") # <----- VARIÁVEL
 
 # O eixo X representa todos os valores que não estão na coluna "class"
 x = stellar_dataset.loc[:, stellar_dataset.columns != "class"].values 
@@ -34,7 +34,7 @@ x = scale_object.fit_transform(x.astype(float))
 xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.15) # <----- VARIÁVEL
 
 # Não aplique um PCA antes de fazer um scaler 
-pca = decomposition.PCA(n_components=10) # Escolha de 10 colunas, a escolha vai depender do gráfico gerado
+pca = decomposition.PCA(n_components=2) # Escolha de 10 colunas, a escolha vai depender do gráfico gerado
 xTrain = pca.fit_transform(xTrain)
 xTest = pca.transform(xTest)
 
@@ -42,7 +42,6 @@ model = LogisticRegression(solver="lbfgs", max_iter=400)
 start_time = time.perf_counter()
 model.fit(xTrain, yTrain)
 end_time = time.perf_counter()
-
 print("Tempo de treino: ", end_time-start_time) # <----- ATRIBUTO
 print("Score: ", model.score(xTest, yTest))     # <----- ATRIBUTO
  

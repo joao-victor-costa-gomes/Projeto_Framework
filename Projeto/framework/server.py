@@ -49,5 +49,3 @@ class Server:
     def run_server(self, host, port):
         print(f"\nServidor rodando em http://{host}:{port}\n")
         serve(self, host=host, port=port)
-
-

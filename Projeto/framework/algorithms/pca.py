@@ -1,5 +1,5 @@
 import os 
-import numpy 
+import numpy as np
 import pandas
 import seaborn
 
@@ -35,11 +35,8 @@ class PCA_2D:
         self.variancia = None 
         self.imagem = None 
 
-        # Remove a necessidade de precisar executar a instância
+        # Executa já na construção
         self.__call__()
-
-        # Remove o "dataset/" do nome da base dados 
-        self.base_dados = base_dados
 
     def __call__(self):
         # Carregando arquivos CSV e definindo vírgula como delimitador
@@ -79,12 +76,12 @@ class PCA_2D:
         plt.figure(figsize=(10, 10))
         plt.xticks(fontsize=10)
         plt.yticks(fontsize=10)
-        plt.xlabel("Principal Component - 1", fontsize="12")
-        plt.ylabel("Principal Component - 2", fontsize="12")
-        plt.xlim(-2500, 2500)
-        plt.ylim(-1500, 1500)
+        plt.xlabel("Principal Component - 1", fontsize="20")
+        plt.ylabel("Principal Component - 2", fontsize="20")
+        #plt.xlim(-2500, 2500)
+        #plt.ylim(-2500, 2500)
         plt.title(f"{self.nome}", fontsize=20)
-        targets = self.get_unique_values(dataset, self.pc2)
+        targets = self.pegar_targets(dataset, self.pc2)
 
         seaborn.set_palette("Set1")
         colors = seaborn.color_palette(n_colors=len(targets))
@@ -110,10 +107,39 @@ class PCA_2D:
         return extensao.lower() == '.csv'
 
     # Pegar automaticamente os targets sem precisar informar
-    def get_unique_values(self, dataframe, column_name):
-        unique_values = dataframe[column_name].unique().tolist()
-        return unique_values
+    def pegar_targets(self, dataframe, column_name):
+        targets = dataframe[column_name].unique().tolist()
+        return targets
 
-    # Converte valores de texto em valores inteiros 
-    def aplicar_label_encoder(self, coluna):
-        pass
+    
+    # Aplicar LabelEncoder nas colunas com dados do tipo texto
+    def aplicar_label_encoder(self, dataset):
+        colunas_string = []
+
+        for coluna in dataset.columns:
+            if dataset[coluna].dtype == 'object':
+                colunas_string.append(coluna)
+
+        labelencoder = LabelEncoder()
+
+        for coluna in colunas_string:
+            dataset[coluna] = labelencoder.fit_transform(dataset[coluna])
+
+
+
+if __name__ == "__main__":
+    # star = PCA_2D(
+    # "PCA Star Classification",
+    # "star_classification.csv", 
+    # 0.2,
+    # ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','class','redshift','plate','MJD','fiber_ID'],
+    # 'class'
+    # )
+
+    mobile = PCA_2D(
+    "PCA Mobile Devices",
+    "mobile_devices.csv", 
+    0.2,
+    ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
+    'price_range'
+    )

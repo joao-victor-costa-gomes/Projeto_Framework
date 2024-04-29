@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: red;
+}
+
+.error-container {
+    text-align: center;
+    margin-bottom: 120px;
+    color: white;
+}
+
+.error-code {
+    font-size: 90px;
+    margin-bottom: 10px; 
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+
