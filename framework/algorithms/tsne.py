@@ -1,42 +1,12 @@
-# >>>>>>>>>>>>>>>>>>>>>>>>> Consetar target
 # >>>>>>>>>>>>>>>>>>>>>>>>> Definir amostragem
-# >>>>>>>>>>>>>>>>>>>>>>>>> Definir tempo de processamento
-# >>>>>>>>>>>>>>>>>>>>>>>>> Definir variancia
-# >>>>>>>>>>>>>>>>>>>>>>>>> Definir imagem
-
 import os
+import time 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt 
 import seaborn as sns
 
 from sklearn.manifold import TSNE
-
-# # Carregando base de dados 
-# dataset = pd.read_csv("datasets/mobile_devices.csv", delimiter=",")
-
-# # Definindo as classes que quero como features
-# features = ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi']
-# # Definindo a classe que quero como target
-# target = ["price_range"]
-
-# x = dataset[features]
-# y = dataset[target]
-
-# tsne = TSNE(n_components=2)
-# x_tsne = tsne.fit_transform(x)
-
-# DF = pd.DataFrame(data=x_tsne, columns=["D1", "D2"])
-
-# DF_with_target = pd.concat([DF, y], axis=1)
-
-# plt.figure(figsize=(10, 10))
-# sns.scatterplot(x="D1", y="D2", hue=target[0], data=DF_with_target, palette="Set1", legend="full")
-# plt.title("t-SNE Visualization of Mobile Devices Dataset", fontsize=20)
-# plt.xlabel("Dimension 1", fontsize=15)
-# plt.ylabel("Dimension 2", fontsize=15)
-# plt.legend(title=target[0])
-# plt.show()
 
 class TSNE_2D:
 
@@ -58,30 +28,43 @@ class TSNE_2D:
         self.variancia = None 
         self.imagem = None 
 
+        self.__call__()
+
      def __call__(self):
         # Carregando arquivos CSV e definindo vírgula como delimitador dos dados
         dataset = pd.read_csv(self.base_dados, delimiter=",")
 
         # Selecionando as features e o target
-        features = dataset[self.tsne1].values 
-        target = dataset[self.tsne2].values
+        features = dataset[self.tsne1]
+        target = dataset[self.tsne2]
+
+        inicio = time.time() # Início do processamento do TSNE 
 
         # Aplicando o TSNE (duas dimensões)
         tsne = TSNE(n_components=2)
         x_tsne = tsne.fit_transform(features)
 
+        fim = time.time() # Fim do processamento do TSNE
+
+        self.tempo = round(fim - inicio, 5) # Calculando tempo de processamento do TSNE
+
         # Criando dataframe para plotar o gráfico do TSNE
         DF = pd.DataFrame(data=x_tsne, columns=["D1", "D2"])
+
         DF_with_target = pd.concat([DF, target], axis=1)
 
         # Plotando gráfico dos dados após aplicar o TSNE
         plt.figure(figsize=(10, 10))
-        plt.xlabel("Dimension 1", fontsize=20)
-        plt.ylabel("Dimension 2",fontsize=20)
+        plt.xlabel("Dimension 1", fontsize=15)
+        plt.ylabel("Dimension 2",fontsize=15)
         plt.title(f"{self.nome}", fontsize=20)
-        sns.scatterplot(x="D1", y="D2", hue=target[0], data=DF_with_target, palette="Set1", legend="full")
-        plt.legend(title=target[0])
-        plt.show()
+        sns.scatterplot(x="D1", y="D2", hue=self.tsne2[0], data=DF_with_target, palette="Set1", legend="full")
+        plt.legend(title=self.tsne2[0])
+        # plt.show()
+
+        # Salva imagem gerada pelo código
+        plt.savefig(f"static/{self.nome.replace(' ', '_')}.png")
+        self.imagem = f"{self.nome.replace(' ', '_')}.png"
 
     # Verifica se a base de dados enviada pelo usuário é um arquivo .csv
      def __verificar_extensao_csv(self, file_path):
@@ -100,14 +83,15 @@ class TSNE_2D:
              raise ValueError('Faltou informar o parâmetro "tsne1"')
         if tsne2 == None:
              raise ValueError('Faltou informar o parâmetro "tsne2"')
-        
 
-mobile = TSNE_2D(
-    "PCA Mobile Devices - Price Range",
-    "mobile_devices.csv", 
-    0.2,
-    ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
-    ['price_range']
-)
 
-mobile()
+if __name__ == "__main__":
+     mobile = TSNE_2D(
+     "TSNE - Price Range",    
+     "mobile_devices.csv", 
+     0.2,
+     ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
+     ['price_range']
+     )
+
+     print(f"Tempo de processamento: {mobile.tempo}")

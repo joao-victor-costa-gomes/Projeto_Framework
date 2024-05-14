@@ -42,8 +42,10 @@ class PCA_2D:
         # Carregando arquivos CSV e definindo vírgula como delimitador
         dataset = pandas.read_csv(self.base_dados, delimiter=",")
 
+        dataset_amostragem = dataset.sample(frac=0.5, random_state=42)
+
         # Selecionando o componente principal 1 e o componente principal 2
-        x = dataset[self.pc1].values 
+        x = dataset_amostragem[self.pc1].values 
         y = dataset[self.pc2].values
 
         # Reduzindo discrepância das variáveis 
