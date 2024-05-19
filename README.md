@@ -97,7 +97,7 @@ def exception_throwing_handler(request, response):
     raise AssertionError("Mensagem de erro no terminal")
  ```
 
- ## Mensagens de error 404 
+## Mensagens de error 404 
 
 Do mesmo modo das mensagens de comportamentos inesperados, você pode adicionar sua própria mensagem de ERROR 404. Só seguir a referência abaixo. (Obs: Caso você não adicione, haverá uma mensagem padrão) 
 
@@ -107,3 +107,26 @@ def error404(request, response):
 
 app.add_404_handler(error404)
  ```
+
+ ## Gerando imagens com os algoritmos de redução de dimensionalidae
+
+Você primeiro deve importar o algorimto desejado do diretório framework.algorithms.{nome_do_algoritmo} e em seguida fornecer como parâmetros:
+- Nome da imagem gerada
+- Nome da base dados (Lembre-se de deixar ela dentro do diretório "datasets")
+- Amostragem da base dados (Em valor decimal. Exemplo: 0.2 = 20% dos dados da base de dados)
+- Componente 1 (Em uma lista)
+- Componente 2 (Em uma lista) 
+
+```bash
+from framework.algorithms.tsne import TSNE_2D
+
+mobile_price_range = TSNE_2D(
+     "TSNE-Price-Range-Amostragem",    
+     "mobile_devices.csv", 
+     1.0,
+     ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
+     ['price_range']
+     )
+ ```
+ E aqui temos a imagem gerada: 
+ ![TSNE-PRICE-RANGE](\static\TSNE-Price-Range-Amostragem.png)
