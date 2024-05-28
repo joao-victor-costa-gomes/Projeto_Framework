@@ -129,4 +129,5 @@ mobile_price_range = TSNE_2D(
      )
  ```
  E aqui temos a imagem gerada: 
- ![TSNE-PRICE-RANGE](\static\TSNE-Price-Range-Amostragem.png)
+ 
+ ![TSNE-PRICE-RANGE](static/TSNE-Price-Range-Amostragem.PNG)
