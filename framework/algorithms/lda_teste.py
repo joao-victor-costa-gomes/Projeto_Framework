@@ -2,25 +2,25 @@ import os
 import time 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 
-from sklearn.manifold import TSNE as tsne_algorithm
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
-class TSNE:
+class PCA:
 
-     def __init__(self, nome=None, base_dados=None, amostragem=None, tsne1=None, tsne2=None, dimensao=None):
+     def __init__(self, nome=None, base_dados=None, amostragem=None, pca1=None, pca2=None, dimensao=None):
 
         self.__verificar_extensao_csv(base_dados)
-        self.__verificar_parametros(nome, base_dados, amostragem, tsne1, tsne2)
+        self.__verificar_parametros(nome, base_dados, amostragem, pca1, pca2)
 
         # Valores de pré-processamento
         self.nome = nome
         self.base_dados = f"datasets/{base_dados}"
         self.amostragem = amostragem
-        self.tsne1 = tsne1
-        self.tsne2 = tsne2
+        self.pca1 = pca1
+        self.pca2 = pca2
         self.dimensao = dimensao
 
         # Valores de pós-processamento 
@@ -39,44 +39,44 @@ class TSNE:
         dataset = pd.read_csv('datasets/amostragem.csv', delimiter=",")
 
         # Selecionando as features e o target
-        features = dataset[self.tsne1]
-        target = dataset[self.tsne2]
+        features = dataset[self.pca1]
+        target = dataset[self.pca2]
 
         self.__excluir_arquivo_amostragem() 
 
         if self.dimensao == 2:
-            inicio = time.time() # Início do processamento do TSNE 2D
-            tsne = tsne_algorithm(n_components=2)
-            x_tsne = tsne.fit_transform(features)
-            fim = time.time() # Fim do processamento do TSNE
+            inicio = time.time() # Início do processamento do PCA2D
+            pca = LinearDiscriminantAnalysis(n_components=2)
+            x_pca = pca.fit_transform(X=features, y=target)
+            fim = time.time() # Fim do processamento do PCA2D
             self.tempo = round(fim - inicio, 5)
-            # Criando dataframe para plotar o gráfico do TSNE
-            DF = pd.DataFrame(data=x_tsne, columns=["D1", "D2"])
+            # Criando dataframe para plotar o gráfico do PCA2D
+            DF = pd.DataFrame(data=x_pca, columns=["D1", "D2"])
             DF_with_target = pd.concat([DF, target], axis=1)
-            # Plotando o gráfico dos dados após aplicar o TSNE
+            # Plotando o gráfico dos dados após aplicar o PCA2D
             plt.clf()
             plt.xlabel("Dimension 1", fontsize=15)
             plt.ylabel("Dimension 2",fontsize=15)
             plt.title(f"{self.nome}", fontsize=20)
-            sns.scatterplot(x="D1", y="D2", hue=self.tsne2[0], data=DF_with_target, palette="Set1", legend="full", size=20)
-            plt.legend(title=self.tsne2[0])
+            sns.scatterplot(x="D1", y="D2", hue=self.pca2[0], data=DF_with_target, palette="Set1", legend="full", size=20)
+            plt.legend(title=self.pca2[0])
 
         elif self.dimensao == 3:
-            inicio = time.time() # Início do processamento do TSNE 3D
-            tsne = tsne_algorithm(n_components=3)
-            x_tsne = tsne.fit_transform(features)
-            fim = time.time() # Fim do processamento do TSNE
+            inicio = time.time() # Início do processamento do PCA3D
+            pca = pca_algorithm(n_components=3)
+            x_pca = pca.fit_transform(features)
+            fim = time.time() # Fim do processamento do PCA3D
             self.tempo = round(fim - inicio, 5)
-            # Criando dataframe para plotar o gráfico do TSNE
-            DF = pd.DataFrame(data=x_tsne, columns=["D1", "D2", "D3"])
+            # Criando dataframe para plotar o gráfico do PCA3D
+            DF = pd.DataFrame(data=x_pca, columns=["D1", "D2", "D3"])
             DF_with_target = pd.concat([DF, target], axis=1)
-            # Plotando gráfico dos dados após aplicar o TSNE
+            # Plotando gráfico dos dados após aplicar o PCA3D
             plt.clf()
             fig = plt.figure()
             ax = fig.add_subplot(111, projection='3d')
-            sc = ax.scatter(DF_with_target["D1"], DF_with_target["D2"], DF_with_target["D3"], c=DF_with_target[self.tsne2[0]], cmap='viridis')
+            sc = ax.scatter(DF_with_target["D1"], DF_with_target["D2"], DF_with_target["D3"], c=DF_with_target[self.pca2[0]], cmap='viridis')
             plt.title(f"{self.nome}", fontsize=20)
-            plt.colorbar(sc, ax=ax, label=self.tsne2[0])
+            plt.colorbar(sc, ax=ax, label=self.pca2[0])
             ax.set_xlabel('Dimension 1', fontsize=15)
             ax.set_ylabel('Dimension 2', fontsize=15)
             ax.set_zlabel('Dimension 3', fontsize=15)
@@ -102,24 +102,24 @@ class TSNE:
      def __excluir_arquivo_amostragem(self):
           os.remove('datasets/amostragem.csv')
 
-     def __verificar_parametros(self, nome, base_dados, amostragem, tsne1, tsne2):
+     def __verificar_parametros(self, nome, base_dados, amostragem, pca1, pca2):
         if nome == None:
              raise ValueError('Faltou informar o parâmetro "nome"')
         if base_dados == None:
              raise ValueError('Faltou informar o parâmetro "base_dados"')
         if amostragem == None:
              raise ValueError('Faltou informar o parâmetro "amostragem"')
-        if tsne1 == None:
-             raise ValueError('Faltou informar o parâmetro "tsne1"')
-        if tsne2 == None:
-             raise ValueError('Faltou informar o parâmetro "tsne2"')
+        if pca1 == None:
+             raise ValueError('Faltou informar o parâmetro "pca1"')
+        if pca2 == None:
+             raise ValueError('Faltou informar o parâmetro "pca2"')
 
 if __name__ == "__main__":
 
-    mobile_price_range_2D = TSNE(
-    "TSNE Price-Range 2D",    
+    mobile_price_range_2D = PCA(
+    "pca PriceRange 2D",    
     "mobile_devices.csv", 
-    1.0,
+    0.5,
     ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
     ['price_range'],
     2
@@ -127,8 +127,8 @@ if __name__ == "__main__":
 
     print(f"Tempo de processamento: {mobile_price_range_2D.tempo}")
 
-#     mobile_price_range_3D = TSNE(
-#     "TSNE Price-Range 3D",    
+#     mobile_price_range_3D = pca(
+#     "pca PriceRange 3D",    
 #     "mobile_devices.csv", 
 #     1.0,
 #     ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
