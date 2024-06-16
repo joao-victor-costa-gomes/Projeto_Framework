@@ -1,5 +1,4 @@
 import os 
-import inspect
 import pandas as pd
 
 def baixar_imagem(figure, tipo, nome, imagem):
@@ -7,7 +6,7 @@ def baixar_imagem(figure, tipo, nome, imagem):
             figure.write_html(f"static/{nome.replace(' ', '_')}.html")
             print("Gráfico gerado com sucesso")
             imagem = f"{nome.replace(' ', '_')}.html"
-        elif tipo == "png":
+        elif tipo == "image":
             figure.write_image(f"static/{nome.replace(' ', '_')}.png")
             print("Gráfico gerado com sucesso")
             imagem = f"{nome.replace(' ', '_')}.png"
