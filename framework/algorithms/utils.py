@@ -1,5 +1,6 @@
 import os 
 import pandas as pd
+import kaleido
 
 def baixar_imagem(figure, tipo, nome, imagem):
         if tipo == "html":
@@ -7,7 +8,7 @@ def baixar_imagem(figure, tipo, nome, imagem):
             print("Gráfico gerado com sucesso")
             imagem = f"{nome.replace(' ', '_')}.html"
         elif tipo == "image":
-            figure.write_image(f"static/{nome.replace(' ', '_')}.png")
+            figure.write_image(f"static/{nome.replace(' ', '_')}.png", engine="kaleido")
             print("Gráfico gerado com sucesso")
             imagem = f"{nome.replace(' ', '_')}.png"
         else:

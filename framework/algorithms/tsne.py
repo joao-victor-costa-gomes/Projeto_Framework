@@ -5,9 +5,10 @@ import pandas as pd
 import plotly.express as px
 
 from sklearn.manifold import TSNE as tsne_algorithm
+from sklearn.preprocessing import StandardScaler
 
 class TSNE:
-    def __init__(self, nome=None, base_dados=None, amostragem=None, tsne1=None, tsne2=None, dimensao=None, tipo_imagem=None):
+    def __init__(self, nome=None, base_dados=None, amostragem=None, tsne1=None, tsne2=None, dimensao=None, tipo_imagem=None, standardscaler=False):
 
         utils.verificar_extensao_csv(base_dados)
         utils.verificar_parametros(nome, base_dados, amostragem, tsne1, tsne2, tipo_imagem)
@@ -20,6 +21,7 @@ class TSNE:
         self.tsne2 = tsne2
         self.dimensao = dimensao
         self.tipo_imagem = tipo_imagem
+        self.standardscaler = standardscaler
 
         # Valores de pós-processamento 
         self.tempo = None 
@@ -40,6 +42,10 @@ class TSNE:
         target = dataset[self.tsne2].astype(str) # Valores que serão plotados como pontos no gráfico 
 
         utils.excluir_arquivo_amostragem()
+
+        if self.standardscaler:
+            scaler = StandardScaler()
+            features = scaler.fit_transform(features)
 
         # Processando gráfico 2D
         if self.dimensao == 2:
@@ -87,6 +93,6 @@ if __name__ == "__main__":
     ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
     ['price_range'],
     2,
-    'image'
+    'html'
     )
     print(f"Tempo de processamento: {mobile_price_range.tempo}")
