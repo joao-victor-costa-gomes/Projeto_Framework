@@ -89,13 +89,15 @@ class PCA:
 
 # Testando funcionamento do algoritmo 
 if __name__ == "__main__":
-    mobile_price_range = PCA(
-    "PCA-PriceRange-2D",    
-    "mobile_devices.csv", 
-    1.0,
-    ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
-    ['price_range'],
-    2, 
-    "html")
-    print(f"Tempo de processamento: {mobile_price_range.tempo}")
-    print(f"Variância total: {mobile_price_range.variancia}")
+    star = PCA(
+    "PCA-STAR-2D-SCALER",    
+    "star_classification.csv", 
+    0.05,
+    ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','redshift','plate', 'MJD','fiber_ID'],
+    ['class'],
+    2,
+    'html',
+    True
+    )
+    print(f"Tempo de processamento: {star.tempo}")
+    print(f"Variância total: {star.variancia}")

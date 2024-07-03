@@ -51,7 +51,7 @@ class NCA:
         if self.dimensao == 2:
             inicio = time.time() # Início do processamento do NCA
             nca = nca_algorithm(n_components=2)
-            x_nca = nca.fit_transform(X=features, y=target)
+            x_nca = nca.fit_transform(X=features, y=target.values.ravel())
             fim = time.time() # Fim do processamento do NCA
             self.tempo = round(fim - inicio, 5)
             # Criando DataFrame para plotar o gráfico do NCA
@@ -66,7 +66,7 @@ class NCA:
         elif self.dimensao == 3:
             inicio = time.time() # Início do processamento do NCA
             nca = nca_algorithm(n_components=3)
-            x_nca = nca.fit_transform(X=features, y=target)
+            x_nca = nca.fit_transform(X=features, y=target.values.ravel())
             fim = time.time() # Fim do processamento do NCA
             self.tempo = round(fim - inicio, 5)
             # Criando DataFrame para plotar o gráfico do NCA
@@ -83,13 +83,14 @@ class NCA:
 
 # Testando funcionamento do algoritmo 
 if __name__ == "__main__":
-    mobile_price_range = NCA(
-    "NCA-PriceRange-2D",    
-    "mobile_devices.csv", 
-    1.0,
-    ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
-    ['price_range'],
+    star = NCA(
+    "NCA-STAR-2D",    
+    "star_classification.csv", 
+    0.05,
+    ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','redshift','plate', 'MJD','fiber_ID'],
+    ['class'],
     2,
-    "image"
+    'html',
+    False
     )
-    print(f"Tempo de processamento: {mobile_price_range.tempo}")
+    print(f"Tempo de processamento: {star.tempo}")
