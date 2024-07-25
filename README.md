@@ -116,19 +116,25 @@ Você primeiro deve importar o algorimto desejado do diretório framework.algori
 - Amostragem da base dados (Em valor decimal. Exemplo: 0.2 = 20% dos dados da base de dados)
 - Componente 1 (Em uma lista)
 - Componente 2 (Em uma lista) 
+- Dimensionalidade (2 para 2D ou 3 para 3D)
+- Como quer baixar a figura ('png' ou 'html')
+- Se quer aplicar o Standard Scaler (True ou False)
+```python
+from framework.algorithms.nca import NCA
 
-```bash
-from framework.algorithms.tsne import TSNE_2D
-
-mobile_price_range = TSNE_2D(
-     "TSNE-Price-Range-Amostragem",    
-     "mobile_devices.csv", 
-     1.0,
-     ['battery_power', 'blue', 'clock_speed', 'dual_sim', 'fc', 'four_g', 'int_memory', 'm_dep', 'mobile_wt', 'n_cores', 'pc', 'px_height', 'px_width', 'ram', 'sc_h', 'sc_w', 'talk_time', 'three_g', 'touch_screen', 'wifi'],
-     ['price_range'],
-     2
-     )
+star = NCA(
+    "NCA-STAR-2D",    
+    "star_classification.csv", 
+    0.05,
+    ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','redshift','plate', 'MJD','fiber_ID'],
+    ['class'],
+    2,
+    'png',
+    False
+)
+print(f"Tempo de processamento: {star.tempo}")
  ```
- E aqui temos a imagem gerada: 
- 
- ![TSNE-PRICE-RANGE](static/TSNE_Price-Range_2D.PNG)
+
+## Exemplo da imagem que será gerada
+
+![imagem gerado pelo código acima](image.png)

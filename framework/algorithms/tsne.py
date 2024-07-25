@@ -87,13 +87,13 @@ class TSNE:
 # Testando funcionamento do algoritmo 
 if __name__ == "__main__":
     star = TSNE(
-    "TSNE-STAR-2D",    
+    "TSNE-STAR",    
     "star_classification.csv", 
     0.05,
     ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','redshift','plate', 'MJD','fiber_ID'],
     ['class'],
     2,
-    'html',
-    False
+    'png',
+    True
     )
     print(f"Tempo de processamento: {star.tempo}")

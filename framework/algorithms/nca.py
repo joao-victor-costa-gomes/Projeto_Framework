@@ -90,7 +90,7 @@ if __name__ == "__main__":
     ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','redshift','plate', 'MJD','fiber_ID'],
     ['class'],
     2,
-    'html',
+    'png',
     False
     )
     print(f"Tempo de processamento: {star.tempo}")
