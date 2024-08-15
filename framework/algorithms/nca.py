@@ -1,6 +1,6 @@
 import os 
 import time 
-import utils
+from . import utils
 import pandas as pd
 import plotly.express as px
 
@@ -60,7 +60,7 @@ class NCA:
             # Criando o gráfico com os dados após aplicar o NCA
             figure = px.scatter(DF_with_target, x="NCA1", y="NCA2", title=self.nome, color=self.nca2[0])
             figure.update_layout(xaxis_title_font={"size": 20}, yaxis_title_font={"size": 20}, title_font={"size": 24})
-            utils.baixar_imagem(figure, self.tipo_imagem, self.nome, self.imagem)
+            self.imagem = utils.baixar_imagem(figure, self.tipo_imagem, self.nome, self.imagem)
 
         # Processando gráfico 3D
         elif self.dimensao == 3:
@@ -75,7 +75,7 @@ class NCA:
             # Criando o gráfico com os dados após aplicar o NCA
             figure = px.scatter_3d(DF_with_target, x="NCA1", y="NCA2", z="NCA3", title=self.nome, color=self.nca2[0])
             figure.update_layout(xaxis_title_font={"size": 20}, yaxis_title_font={"size": 20}, title_font={"size": 24})
-            utils.baixar_imagem(figure, self.tipo_imagem, self.nome, self.imagem)
+            self.imagem = utils.baixar_imagem(figure, self.tipo_imagem, self.nome, self.imagem)
 
         else:
             raise ValueError('O valor do parâmetro "dimensao" só pode ser 2 ou 3')
@@ -83,14 +83,29 @@ class NCA:
 
 # Testando funcionamento do algoritmo 
 if __name__ == "__main__":
-    star = NCA(
-    "NCA-STAR-2D",    
-    "star_classification.csv", 
-    0.05,
-    ['obj_ID','alpha','delta','u','g','r','i','z','run_ID','rerun_ID','cam_col','field_ID','spec_obj_ID','redshift','plate', 'MJD','fiber_ID'],
-    ['class'],
+    
+    # Versão HTML
+    mobile1 = NCA(
+    "NCA-MOBILE-2D",    
+    "mobile_devices.csv", 
+    1.0,
+    ['battery_power','blue','clock_speed','dual_sim','fc','four_g','int_memory','m_dep','mobile_wt','n_cores','pc','px_height','px_width','ram','sc_h','sc_w','talk_time','three_g','touch_screen','wifi'],
+    ['price_range'],
+    2,
+    'html',
+    False
+    )
+    print(f"Tempo de processamento (NCA Interativo): {mobile1.tempo}")
+
+    # Versão PNG
+    mobile2 = NCA(
+    "NCA-MOBILE-2D",    
+    "mobile_devices.csv", 
+    1.0,
+    ['battery_power','blue','clock_speed','dual_sim','fc','four_g','int_memory','m_dep','mobile_wt','n_cores','pc','px_height','px_width','ram','sc_h','sc_w','talk_time','three_g','touch_screen','wifi'],
+    ['price_range'],
     2,
     'png',
     False
     )
-    print(f"Tempo de processamento: {star.tempo}")
+    print(f"Tempo de processamento (NCA Imagem): {mobile2.tempo}")

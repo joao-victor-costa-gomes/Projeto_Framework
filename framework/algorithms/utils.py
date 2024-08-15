@@ -7,10 +7,12 @@ def baixar_imagem(figure, tipo, nome, imagem):
             figure.write_html(f"static/{nome.replace(' ', '_')}.html")
             print("Gráfico gerado com sucesso")
             imagem = f"{nome.replace(' ', '_')}.html"
+            return imagem
         elif tipo == "png":
             figure.write_image(f"static/{nome.replace(' ', '_')}.png", engine="kaleido")
             print("Gráfico gerado com sucesso")
             imagem = f"{nome.replace(' ', '_')}.png"
+            return imagem 
         else:
             raise ValueError('O parâmetro "imagem" deve ser "html" ou "png".')
 
