@@ -134,7 +134,3 @@ star = NCA(
 )
 print(f"Tempo de processamento: {star.tempo}")
  ```
-
-## Exemplo da imagem que será gerada
-
-![imagem gerado pelo código acima](image.png)
