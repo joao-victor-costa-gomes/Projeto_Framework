@@ -4,21 +4,21 @@ import utils
 import pandas as pd
 import plotly.express as px
 
-from sklearn.decomposition import KernelPCA as kpca_algorithm
+import umap.umap_ as umap 
 from sklearn.preprocessing import StandardScaler
 
-class KPCA:
-    def __init__(self, nome=None, base_dados=None, amostragem=None, kpca1=None, kpca2=None, dimensao=None, tipo_imagem=None, standardscaler=False):
+class UMAP:
+    def __init__(self, nome=None, base_dados=None, amostragem=None, umap1=None, umap2=None, dimensao=None, tipo_imagem=None, standardscaler=False):
 
         utils.verificar_extensao_csv(base_dados)
-        utils.verificar_parametros(nome, base_dados, amostragem, kpca1, kpca2, tipo_imagem)
+        utils.verificar_parametros(nome, base_dados, amostragem, umap1, umap2, tipo_imagem)
 
         # Valores de pré-processamento
         self.nome = nome
         self.base_dados = f"datasets/{base_dados}"
         self.amostragem = amostragem
-        self.kpca1 = kpca1
-        self.kpca2 = kpca2
+        self.umap1 = umap1
+        self.umap2 = umap2
         self.dimensao = dimensao
         self.tipo_imagem = tipo_imagem
         self.standardscaler = standardscaler
@@ -38,8 +38,8 @@ class KPCA:
         # Carregando arquivo CSV da amostragem e definindo vírgula como delimitador dos dados
         dataset = pd.read_csv('datasets/amostragem.csv', delimiter=",")
 
-        features = dataset[self.kpca1] # Valores que serão usados na construção do gráfico
-        target = dataset[self.kpca2].astype(str) # Valores que serão plotados como pontos no gráfico 
+        features = dataset[self.umap1] # Valores que serão usados na construção do gráfico
+        target = dataset[self.umap2].astype(str) # Valores que serão plotados como pontos no gráfico 
 
         utils.excluir_arquivo_amostragem()
 
@@ -47,39 +47,33 @@ class KPCA:
             scaler = StandardScaler()
             features = scaler.fit_transform(features)
 
-        # Processando gráfico 2D
+        # Processando gráfico 2D  y=target.values.ravel())
         if self.dimensao == 2:
-            inicio = time.time() # Início do processamento do KPCA
-            kpca = kpca_algorithm(n_components=2, kernel='poly')
-            x_kpca = kpca.fit_transform(features)
-            fim = time.time() # Fim do processamento do KPCA
+            inicio = time.time() # Início do processamento do UMAP
+            reducer = umap.UMAP(n_components=2)
+            x_umap = reducer.fit_transform(features)
+            fim = time.time() # Fim do processamento do UMAP
             self.tempo = round(fim - inicio, 5)
-            # Calculando variância dos dados
-            # total_var = kpca.explained_variance_ratio_.sum() * 100
-            # self.variancia = total_var
-            # Criando DataFrame para plotar o gráfico do kpca
-            DF = pd.DataFrame(data=x_kpca, columns=["KPCA1", "KPCA2"])
+            # Criando DataFrame para plotar o gráfico do UMAP
+            DF = pd.DataFrame(data=x_umap, columns=["UMAP1", "UMAP2"])
             DF_with_target = pd.concat([DF, target], axis=1)
-            # Criando o gráfico com os dados após aplicar o kpca
-            figure = px.scatter(DF_with_target, x="KPCA1", y="KPCA2", title=self.nome, color=self.kpca2[0])
+            # Criando o gráfico com os dados após aplicar o UMAP
+            figure = px.scatter(DF_with_target, x="UMAP1", y="UMAP2", title=self.nome, color=self.umap2[0])
             figure.update_layout(xaxis_title_font={"size": 20}, yaxis_title_font={"size": 20}, title_font={"size": 24})
             self.imagem = utils.baixar_imagem(figure, self.tipo_imagem, self.nome, self.imagem)
 
         # Processando gráfico 3D
         elif self.dimensao == 3:
-            inicio = time.time() # Início do processamento do KPCA
-            kpca = kpca_algorithm(n_components=3, kernel='poly')
-            x_kpca = kpca.fit_transform(features)
-            fim = time.time() # Fim do processamento do KPCA
+            inicio = time.time() # Início do processamento do UMAP
+            reducer = umap.UMAP(n_components=3)
+            x_umap = reducer.fit_transform(features)
+            fim = time.time() # Fim do processamento do UMAP
             self.tempo = round(fim - inicio, 5)
-            # Calculando variância dos dados
-            # total_var = kpca.explained_variance_ratio_.sum() * 100
-            # self.variancia = total_var
-            # Criando DataFrame para plotar o gráfico do KPCA
-            DF = pd.DataFrame(data=x_kpca, columns=["KPCA1", "KPCA2", "KPCA3"])
+            # Criando DataFrame para plotar o gráfico do UMAP
+            DF = pd.DataFrame(data=x_umap, columns=["UMAP1", "UMAP2", "UMAP3"])
             DF_with_target = pd.concat([DF, target], axis=1)
-            # Criando o gráfico com os dados após aplicar o kpca
-            figure = px.scatter_3d(DF_with_target, x="KPCA1", y="KPCA2", z="KPCA3", title=self.nome, color=self.kpca2[0])
+            # Criando o gráfico com os dados após aplicar o UMAP
+            figure = px.scatter_3d(DF_with_target, x="UMAP1", y="UMAP2", z="UMAP3", title=self.nome, color=self.umap2[0])
             figure.update_layout(xaxis_title_font={"size": 20}, yaxis_title_font={"size": 20}, title_font={"size": 24})
             self.imagem = utils.baixar_imagem(figure, self.tipo_imagem, self.nome, self.imagem)
 
@@ -91,8 +85,8 @@ class KPCA:
 if __name__ == "__main__":
     
     # Versão HTML
-    mobile1 = KPCA(
-    "KPCA-MOBILE-2D",    
+    mobile1 = UMAP(
+    "UMAP-MOBILE-2D",    
     "mobile_devices.csv", 
     1.0,
     ['battery_power','blue','clock_speed','dual_sim','fc','four_g','int_memory','m_dep','mobile_wt','n_cores','pc','px_height','px_width','ram','sc_h','sc_w','talk_time','three_g','touch_screen','wifi'],
@@ -101,12 +95,11 @@ if __name__ == "__main__":
     'html',
     False
     )
-    print(f"Tempo de processamento (KPCA Interativo): {mobile1.tempo}")
-    print(f"Variância total: {mobile1.variancia}")
+    print(f"Tempo de processamento (UMAP Interativo): {mobile1.tempo}")
 
     # Versão PNG
-    mobile2 = KPCA(
-    "KPCA-MOBILE-2D",    
+    mobile2 = UMAP(
+    "UMAP-MOBILE-2D",    
     "mobile_devices.csv", 
     1.0,
     ['battery_power','blue','clock_speed','dual_sim','fc','four_g','int_memory','m_dep','mobile_wt','n_cores','pc','px_height','px_width','ram','sc_h','sc_w','talk_time','three_g','touch_screen','wifi'],
@@ -115,6 +108,4 @@ if __name__ == "__main__":
     'png',
     False
     )
-    print(f"Tempo de processamento (KPCA Imagem): {mobile2.tempo}")
-    print(f"Variância total: {mobile2.variancia}")
-
+    print(f"Tempo de processamento (UMAP Imagem): {mobile2.tempo}")
