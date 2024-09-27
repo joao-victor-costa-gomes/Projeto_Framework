@@ -1,6 +1,6 @@
 import os 
 import time 
-from . import utils
+import utils
 import pandas as pd
 import plotly.express as px
 
